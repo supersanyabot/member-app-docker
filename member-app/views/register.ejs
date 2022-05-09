@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header', {alreadyLogIn: alreadyLogIn}); %>
+    </header>
+
+    <% if (locals.register_error) { %>
+        <script>
+            Snackbar.show({
+                customClass: 'rounded-lg',
+                showAction: false,
+                pos: 'top-center',
+                text: 'Register has not been completed, please try again!',
+                textColor: '#721c24',
+                backgroundColor: '#f8d7da'
+            });
+        </script>
+    <% } %>
+
+    <div class="container p-5">
+        <div class="row align-center">
+            <div class="col-sm-6 bg-light rounded border py-3 offset-sm-3">
+                <h2 class="text-center">Register</h2>
+
+                <form action="/register" method="POST" enctype="multipart/form-data" novalidate>
+                    <div class="col">
+                        <div class="preview-images"></div>
+                    </div>
+                    <label for="_rname">Profile Picture</label>
+                    <div class="form-group">
+                        <input type="file" accept="image/*" name="file" id="input-files" class="form-control-file border" />
+                    </div>
+                    <div class="form-group">
+                        <label for="_rname">First Name</label>
+                        <input type="text" name="user_fname" id="_rfname" class="form-control" placeholder="First Name"
+                            value="<%= (locals.old_data) ? old_data.user_fname : ''; %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rname">Last Name</label>
+                        <input type="text" name="user_lname" id="_rlname" class="form-control" placeholder="Last Name"
+                            value="<%= (locals.old_data) ? old_data.user_lname : ''; %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rusername">Username</label>
+                        <input type="text" name="user_username" id="_rusername" class="form-control"
+                            placeholder="Username" value="<%= (locals.old_data) ? old_data.user_username : ''; %>"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rpass">Password</label>
+                        <input type="password" name="user_pass" id="_rpass" class="form-control" placeholder="Password"
+                            required>
+                    </div>
+                    <% if (locals.register_error) { register_error.forEach(function(error_msg){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error_msg %>
+                        </div>
+                        <% }); } %>
+                        <button type="submit" class="btn btn-success">Sign Up</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+</body>
+
+</html>

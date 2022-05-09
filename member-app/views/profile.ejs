@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header', {alreadyLogIn: alreadyLogIn}); %>
+    </header>
+    
+    <div class="container p-3">
+        <div class="card">
+            <div class="card-body">
+                <% if (alreadyLogIn) { %>
+                    <h1>Hello, <%= name %>
+                    </h1>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+
+    <% if (locals.pic_msg) { %>
+        <script>
+            Snackbar.show({
+                customClass: 'rounded-lg',
+                showAction: false,
+                pos: 'top-center',
+                text: 'Profile picture has been changed successfully!',
+                textColor: '#155724',
+                backgroundColor: '#d4edda'
+            });
+        </script>
+    <% } %>
+
+    <% if (locals.profile_msg) { %>
+        <script>
+            Snackbar.show({
+                customClass: 'rounded-lg',
+                showAction: false,
+                pos: 'top-center',
+                text: 'Profile details has been changed successfully!',
+                textColor: '#155724',
+                backgroundColor: '#d4edda'
+            });
+        </script>
+    <% } %>
+
+    <% if (locals.password_errors) { %>
+        <script>
+            Snackbar.show({
+                customClass: 'rounded-lg',
+                showAction: false,
+                pos: 'top-center',
+                text: 'Password has not been changed!',
+                textColor: '#721c24',
+                backgroundColor: '#f8d7da'
+            });
+        </script>
+    <% } %>
+
+    <div class="container p-3">
+        <div class="row align-center">
+            <div class="col-sm-6 bg-light rounded border p-3 my-3 offset-md-3">
+                <h2 class="text-center">Profile Picture</h2>
+                <div class="col">
+                    <div class="preview-images">
+                        <img style="display: block;margin-left: auto;margin-right: auto;width: 250px;" id="prev" src="data:image/png;base64, <%= data %>" alt="image" />
+                    </div>
+                </div>
+                <form class="mt-4" action="/profile" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" accept="image/*" name="file" id="input-files"
+                            class="form-control-file border" />
+                    </div>
+                    <% if (locals.pic_errors) { pic_errors.forEach(function(error_msg){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error_msg %>
+                        </div>
+                        <% }); } %>
+                            <button type="submit" name="submit" value="save_pic" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container p-3">
+        <div class="row align-center">
+            <div class="col-sm-6 bg-light rounded border p-3 my-3 offset-md-3">
+                <h2 class="text-center">Profile Details</h2>
+                <form action="/profile" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="_rname">First Name</label>
+                        <input type="text" name="user_fname" id="_rfname" class="form-control" placeholder="First Name"
+                            value="<%= (locals.old_data) ? old_data.user_fname : locals.user_fname; %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rname">Last Name</label>
+                        <input type="text" name="user_lname" id="_rlname" class="form-control" placeholder="Last Name"
+                            value="<%= (locals.old_data) ? old_data.user_lname : locals.user_lname; %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rusername">Username</label>
+                        <input type="text" name="user_username" id="_rusername" class="form-control"
+                            placeholder="Username"
+                            value="<%= (locals.old_data) ? old_data.user_username : locals.user_username; %>" readonly>
+                    </div>
+                    <% if (locals.profile_errors) { profile_errors.forEach(function(error_msg){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error_msg %>
+                        </div>
+                        <% }); } %>
+                            <button type="submit" name="submit" value="save" class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+        <div class="row align-center">
+            <div class="col-sm-6 bg-light rounded border p-3 my-3 offset-md-3">
+                <h2 class="text-center">Change Password</h2>
+                <form action="/profile" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="_rpass">Old Password</label>
+                        <input type="password" name="user_pass" id="_rpass" class="form-control" placeholder="Password"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rpass">New Password</label>
+                        <input type="password" name="user_newpass" id="_rpass" class="form-control"
+                            placeholder="New Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="_rpass">Confirm New Password</label>
+                        <input type="password" name="user_cnewpass" id="_rpass" class="form-control"
+                            placeholder="Confirm New Password" required>
+                    </div>
+                    <% if (locals.password_errors) { password_errors.forEach(function(error_msg){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error_msg %>
+                        </div>
+                        <% }); %>
+                        <script>
+                            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+                        </script>
+                    <% } %>
+                    <button type="submit" name="submit" value="change" class="btn btn-success">Change</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+    <script>
+        $(document).ready(function() {
+            $(".toast").toast('show');
+        });
+    </script>
+</body>
+
+</html>

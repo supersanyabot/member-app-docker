@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header', {alreadyLogIn: alreadyLogIn}); %>
+    </header>
+
+    <div class="container p-3">
+        <div class="card">
+            <div class="card-body">
+                <% if (alreadyLogIn) { %>
+                    <img style="margin-left: auto;margin-right: auto;width: 250px;" src="data:image/png;base64, <%= data %>" alt="image" />
+                    <h1>Hello, <%= name %>
+                    </h1>
+                    <!-- <a href="/logout" class="btn btn-danger">Logout</a> -->
+                <% } else{ %>
+                    <h1>Hello, Guest</h1>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!-- <p class="text-center text-muted">&copy; Copyright</p> -->
+<hr />
+<p class="text-center text-muted">--- End of Screen ---</p>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let imagesPreview = function (input, placeToInsertImagePreview) {
+            if (input.files) {
+                let filesAmount = input.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+                        $($.parseHTML("<img style='display: block;margin-left: auto;margin-right: auto;width: 250px;' id=prev>"))
+                            .attr("src", event.target.result)
+                            .appendTo(placeToInsertImagePreview);
+                    };
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        };
+        $("#input-files").on("change", function () {
+            $("#prev").replaceWith(imagesPreview(this, 'div.preview-images'));
+        });
+    });
+</script>

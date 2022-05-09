@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('./partials/head'); %>
+</head>
+
+<body>
+  <header>
+    <%- include('./partials/header', {alreadyLogIn: alreadyLogIn}); %>
+  </header>
+
+  <% if (locals.login_errors) { %>
+    <script>
+      Snackbar.show({
+        customClass: 'rounded-lg',
+        showAction: false,
+        pos: 'top-center',
+        text: 'Login has not been completed, please try again!',
+        textColor: '#721c24',
+        backgroundColor: '#f8d7da'
+      });
+    </script>
+    <% } %>
+
+      <div class="container p-5">
+        <div class="row">
+          <div class="col-sm-6 bg-light rounded border py-3 offset-sm-3">
+            <h2 class="text-center">Login</h2>
+            <form action="/login" method="POST">
+              <div class="form-group">
+                <label for="_username">Username</label>
+                <input type="text" name="user_username" id="_username" class="form-control" placeholder="Username"
+                  rnodeequired>
+              </div>
+              <div class="form-group">
+                <label for="_pass">Password</label>
+                <input type="password" name="user_pass" id="_pass" class="form-control" placeholder="Password" required>
+              </div>
+              <% if (locals.login_errors) { login_errors.forEach(function(error_msg){ %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error_msg %>
+                </div>
+                <% }); } %>
+                  <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <%- include('./partials/footer'); %>
+      </footer>
+</body>
+
+</html>
