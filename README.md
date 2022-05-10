@@ -7,7 +7,7 @@ docker-compose up -d
 ```
 
 ## wait until mysql ready to connect
-access web application from
+access web application via browser
 ```bash
 localhost:3000
 ```
